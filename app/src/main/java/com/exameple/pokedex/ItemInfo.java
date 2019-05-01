@@ -11,8 +11,11 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.exameple.pokedex.api.pokeapi;
 import com.exameple.pokedex.pokemon.PokemonList;
 import com.exameple.pokedex.pokemon.Pokemon;
@@ -32,6 +35,7 @@ public class ItemInfo extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.item_info);
         Button backButton = (Button) findViewById(R.id.button);
+        ImageView imageView = findViewById(R.id.imageView);
         TextView textView = findViewById(R.id.textView);
         TextView textView2 = findViewById(R.id.textView2);
         backButton.setOnClickListener(new View.OnClickListener(){
@@ -44,6 +48,11 @@ public class ItemInfo extends AppCompatActivity {
         String name = extras.getString("name");
         String img = extras.getString("image");
         textView.setText(name);
-        //textView2.setText(img);
+
+        Glide.with(this)
+                .load(img)
+                .centerCrop()
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                .into(imageView);
     }
 }
