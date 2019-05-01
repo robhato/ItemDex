@@ -33,7 +33,6 @@ public class MainActivity extends AppCompatActivity implements ListAdapter.onNot
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        setContentView(R.layout.item_info);
 
         recyclerView = (RecyclerView) findViewById((R.id.not_an_int));
         listAdapt = new ListAdapter(this, this);
