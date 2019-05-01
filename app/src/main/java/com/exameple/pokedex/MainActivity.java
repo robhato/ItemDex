@@ -101,9 +101,11 @@ public class MainActivity extends AppCompatActivity implements ListAdapter.onNot
         String name = data.get(position).getName();
         String image = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/" + data.get(position).getName() +  ".png";
         String URL = data.get(position).getUrl();
+        int id = data.get(position).getNumber();
         intent.putExtra("names", name);
         intent.putExtra("image", image);
         intent.putExtra("url", URL);
+        intent.putExtra("id", id);
         startActivity(intent);
     }
 }
