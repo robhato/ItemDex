@@ -45,7 +45,7 @@ public class ItemInfo extends AppCompatActivity {
         });
         Intent intent = getIntent();
         Bundle extras = intent.getExtras();
-        String name = extras.getString("name");
+        String name = extras.getString("names");
         String img = extras.getString("image");
         textView.setText(name);
 
