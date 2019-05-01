@@ -54,5 +54,6 @@ public class ItemInfo extends AppCompatActivity {
                 .centerCrop()
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .into(imageView);
+
     }
 }
