@@ -1,17 +1,11 @@
 package com.exameple.pokedex;
 
-import android.nfc.Tag;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.View;
-import android.view.Menu;
-import android.view.MenuItem;
 import com.exameple.pokedex.api.pokeapi;
 import com.exameple.pokedex.pokemon.PokemonList;
 import com.exameple.pokedex.pokemon.Pokemon;
@@ -31,29 +25,56 @@ public class MainActivity extends AppCompatActivity {
     private Retrofit retrofit;
     private static final String TAG = "POKEDEX";
 
+    private int offset;
+    private boolean load;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        recyclerView = findViewById(R.id.recyclerView);
-        listAdapt = new ListAdapter();
+        recyclerView = (RecyclerView) findViewById((R.id.not_an_int));
+        listAdapt = new ListAdapter(this);
         recyclerView.setAdapter(listAdapt);
         recyclerView.setHasFixedSize(true);
-        GridLayoutManager layoutManager = new GridLayoutManager(this, 3);
+        final GridLayoutManager layoutManager = new GridLayoutManager(this, 3);
         recyclerView.setLayoutManager(layoutManager);
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
 
+                if (dy > 0) {
+                    int visibleItemCount = layoutManager.getChildCount();
+                    int totalItemCount = layoutManager.getItemCount();
+                    int pastVisibleItems = layoutManager.findFirstVisibleItemPosition();
+
+                    if(load) {
+                        if ((visibleItemCount + pastVisibleItems) >= totalItemCount) {
+                            Log.i(TAG, " final");
+
+                            load = false;
+                            offset += 20;
+                            getData(offset);
+                        }
+                    }
+            }
+        }
+    });
         retrofit = new Retrofit.Builder().baseUrl("https://pokeapi.co/api/v2/")
                     .addConverterFactory(GsonConverterFactory.create()).build();
-        getData();
+        load = true;
+        offset = 0;
+        getData(offset);
     }
-    private void getData() {
+    private void getData(int offset) {
         pokeapi api = retrofit.create(pokeapi.class);
-        Call<PokemonList> request = api.getList();
+        Call<PokemonList> request = api.getList(20, offset);
 
         request.enqueue(new Callback<PokemonList>() {
             @Override
             public void onResponse(Call<PokemonList> call, Response<PokemonList> response) {
+                load = true;
                 if (response.isSuccessful()) {
                     PokemonList pokemonList = response.body();
                     ArrayList<Pokemon> pokemon = pokemonList.getResults();
@@ -66,6 +87,7 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<PokemonList> call, Throwable t) {
+                load = true;
                 Log.e(TAG, " onFailure " + t.getMessage());
             }
         });
