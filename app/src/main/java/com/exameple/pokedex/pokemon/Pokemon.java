@@ -1,9 +1,12 @@
 package com.exameple.pokedex.pokemon;
 
+import java.util.ArrayList;
+
 public class Pokemon {
     private int number;
     private String name;
     private String url;
+    private ArrayList<String> effect_entries;
 
     public String getName() {
         return name;
@@ -28,5 +31,13 @@ public class Pokemon {
 
     public void setNumber(int number) {
         this.number = number;
+    }
+
+    public ArrayList<String> getEffect_entries() {
+        return effect_entries;
+    }
+
+    public void setEffect_entries(ArrayList<String> effect_entries) {
+        this.effect_entries = effect_entries;
     }
 }

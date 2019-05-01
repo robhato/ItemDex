@@ -1,14 +1,9 @@
 package com.exameple.pokedex;
 
-import android.content.ClipData;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -16,19 +11,14 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.exameple.pokedex.api.pokeapi;
-import com.exameple.pokedex.pokemon.PokemonList;
-import com.exameple.pokedex.pokemon.Pokemon;
-import java.util.ArrayList;
 
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 
 public class ItemInfo extends AppCompatActivity {
+
+    private Retrofit retrofit;
+    private static final String TAG = "POKEDEX";
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -47,6 +37,7 @@ public class ItemInfo extends AppCompatActivity {
         Bundle extras = intent.getExtras();
         String name = extras.getString("names");
         String img = extras.getString("image");
+        String url = extras.getString("url");
         textView.setText(name);
 
         Glide.with(this)
@@ -54,6 +45,5 @@ public class ItemInfo extends AppCompatActivity {
                 .centerCrop()
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .into(imageView);
-
     }
 }
