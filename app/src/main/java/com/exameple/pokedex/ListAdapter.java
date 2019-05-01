@@ -40,6 +40,11 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> {
     public void onBindViewHolder(ViewHolder viewHolder, int i) {
         Pokemon individual = data.get(i);
         viewHolder.textView.setText(individual.getName());
+        Glide.with(getCon)
+                .load("https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/" + individual.getName() +  ".png")
+                .centerCrop()
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                .into(viewHolder.imageView);
     }
 
     @Override
