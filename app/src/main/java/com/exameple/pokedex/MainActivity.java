@@ -1,5 +1,6 @@
 package com.exameple.pokedex;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -17,7 +18,7 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements ListAdapter.onNoteListener {
 
     private RecyclerView recyclerView;
     private ListAdapter listAdapt;
@@ -34,7 +35,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         recyclerView = (RecyclerView) findViewById((R.id.not_an_int));
-        listAdapt = new ListAdapter(this);
+        listAdapt = new ListAdapter(this, this);
         recyclerView.setAdapter(listAdapt);
         recyclerView.setHasFixedSize(true);
         final GridLayoutManager layoutManager = new GridLayoutManager(this, 3);
@@ -91,5 +92,16 @@ public class MainActivity extends AppCompatActivity {
                 Log.e(TAG, " onFailure " + t.getMessage());
             }
         });
+    }
+
+    @Override
+    public void onNoteClick(int position) {
+        ArrayList<Pokemon> data = listAdapt.data;
+        Intent intent = new Intent(this, ItemInfo.class);
+        String name = data.get(position).getName();
+        String image = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/" + data.get(position).getName() +  ".png";
+        intent.putExtra("names", name);
+        intent.putExtra("image", image);
+        startActivity(intent);
     }
 }

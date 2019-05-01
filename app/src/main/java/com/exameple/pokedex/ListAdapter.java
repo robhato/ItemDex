@@ -16,10 +16,12 @@ import com.exameple.pokedex.pokemon.Pokemon;
 import java.util.ArrayList;
 
 public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> {
-    private ArrayList<Pokemon> data;
+    public ArrayList<Pokemon> data;
     private Context getCon;
+    private onNoteListener mOnNoteListener;
 
-    public ListAdapter(Context context) {
+    public ListAdapter(Context context, onNoteListener onNoteListener) {
+        this.mOnNoteListener = onNoteListener;
         this.getCon = context;
         data = new ArrayList<>();
     }
@@ -33,7 +35,7 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> {
     public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
         View view = LayoutInflater.from(viewGroup.getContext())
                     .inflate(R.layout.item_pokemon, viewGroup, false);
-        return new ViewHolder(view);
+        return new ViewHolder(view, mOnNoteListener);
     }
 
     @Override
@@ -52,14 +54,26 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> {
         return data.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         private ImageView imageView;
         private TextView textView;
-        public ViewHolder(View itemView) {
+        onNoteListener onNoteListener;
+        public ViewHolder(View itemView, onNoteListener onNoteListener) {
             super(itemView);
 
             imageView = itemView.findViewById(R.id.imageView);
             textView = itemView.findViewById((R.id.textView));
+            this.onNoteListener = onNoteListener;
+            itemView.setOnClickListener(this);
         }
+
+        @Override
+        public void onClick(View v) {
+            onNoteListener.onNoteClick(getAdapterPosition());
+        }
+    }
+
+    public interface onNoteListener{
+        void onNoteClick(int position);
     }
 }
