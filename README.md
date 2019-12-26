@@ -1,6 +1,6 @@
 # ItemDex
 
-This is a pokedex with a twist. It displays all the items from Pokemon! The wrapper library [pokekotlin](https://github.com/PokeAPI/pokekotlin) and the HTTP client [Retrofit](https://square.github.io/retrofit/)
+This is a pokedex with a twist. It displays all the items from Pokemon! The wrapper library is [pokekotlin](https://github.com/PokeAPI/pokekotlin) and the HTTP client [Retrofit](https://square.github.io/retrofit/)
 
 ## Built With
 
